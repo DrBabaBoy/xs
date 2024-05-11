@@ -217,4 +217,5 @@ class PaginaMenu:
 def main(pagina: ft.Page) -> None:
     pagina_menu = PaginaMenu(pagina)
     pagina_menu.mostrar_menu()
+    pagina.window_center()
 
