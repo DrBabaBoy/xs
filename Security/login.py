@@ -1,8 +1,10 @@
 import flet as ft
+from facial_recognition.ui.app import start_app
 from flet import TextField, ElevatedButton, Column, Row, AlertDialog, TextButton, Text
 from tinydb import TinyDB, Query
 import hashlib
 import os
+
 
 data_folder = os.path.join(os.getcwd(), "data")
 os.makedirs(data_folder, exist_ok=True)
@@ -64,7 +66,8 @@ class PaginaRegistro:
                 db.insert({'usuario': usuario, 'password': password_hash})
                 print("Usuario registrado exitosamente!")
                 self.pagina.clean()
-                # Aquí podrías redirigir a la página de login después del registro
+                self.pagina.update()  # Actualizar la página después de registrar al usuario
+                start_app()  # Redirigir al archivo app.py en facial_recognition/ul
             else:
                 self.pagina.dialog = self.dialogo_usuario_existente
                 self.dialogo_usuario_existente.open = True
@@ -130,7 +133,8 @@ class PaginaLogin:
             if resultado:
                 print("¡Bienvenido,", usuario, "!")
                 self.pagina.clean()
-                # Aquí podrías redirigir a la página de dashboard después del inicio de sesión
+                self.pagina.update()  # Actualizar la página después de iniciar sesión exitosamente
+                start_app()  # Redirigir al archivo app.py en facial_recognition/ul
             else:
                 self.pagina.dialog = self.dialogo_error
                 self.dialogo_error.open = True
@@ -214,5 +218,3 @@ def main(pagina: ft.Page) -> None:
     pagina_menu = PaginaMenu(pagina)
     pagina_menu.mostrar_menu()
 
-
-ft.app(target=main)

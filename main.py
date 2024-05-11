@@ -1,4 +1,5 @@
-from facial_recognition.ui.app import start_app
+from Security.login import main
+import flet as ft
 
 if __name__ == "__main__":
-    start_app()
+    ft.app(target=main)
