@@ -1,11 +1,6 @@
 import flet as ft
-
-from facial_recognition.ui.screens.facial_recognition_screen import (
-    FacialRecognitionScreen,
-)
-from facial_recognition.ui.screens.generate_data_screen import (
-    GenerateDataScreen,
-)
+from facial_recognition.ui.screens.facial_recognition_screen import FacialRecognitionScreen
+from facial_recognition.ui.screens.generate_data_screen import GenerateDataScreen
 from facial_recognition.ui.screens.train_model_screen import TrainModelScreen
 from facial_recognition.ui.user_controls.app_bar import custom_app_bar
 from facial_recognition.util.constants import APP_TITLE
@@ -19,34 +14,7 @@ class FaceRecognitionApp(ft.UserControl):
                 ft.Tab(
                     text="Generate data",
                     icon=ft.icons.INSERT_CHART,
-                    content=ft.Text("Generate data"),
-                ),
-                ft.Tab(
-                    text="Train model",
-                    icon=ft.icons.ATTACH_FILE,
-                    content=ft.Text("Train model"),
-                ),
-                ft.Tab(
-                    text="Recognize faces",
-                    icon=ft.icons.FIND_IN_PAGE,
-                    content=ft.Text("Recognize faces"),
-                )
-            ],
-            expand=True,
-        )
-
-
-def app(page: ft.Page) -> None:
-    page.title = APP_TITLE
-    page.add(
-        ft.Tabs(
-            selected_index=0,
-            animation_duration=300,
-            tabs=[
-                ft.Tab(
-                    text="Generate data",
-                    icon=ft.icons.INSERT_CHART,
-                    content=GenerateDataScreen()
+                    content=GenerateDataScreen(),
                 ),
                 ft.Tab(
                     text="Train model",
@@ -56,18 +24,21 @@ def app(page: ft.Page) -> None:
                 ft.Tab(
                     text="Recognize faces",
                     icon=ft.icons.FIND_IN_PAGE,
-                    content=FacialRecognitionScreen()
+                    content=FacialRecognitionScreen(),
                 )
             ],
             expand=True,
-        ),
-    )
+        )
+
+
+def app(page: ft.Page) -> None:
+    page.title = APP_TITLE
+    page.add(FaceRecognitionApp())
 
     page.appbar = custom_app_bar()
     page.theme = ft.Theme(color_scheme_seed=ft.colors.PURPLE_50)
     page.update()
     page.window_center()
-
 
 
 def start_app() -> None:
