@@ -1,5 +1,5 @@
-from Security.login import main
+from facial_recognition.ui.app import main
 import flet as ft
 
 if __name__ == "__main__":
-    ft.app(target=main)
+    main(ft.Page())
