@@ -15,6 +15,7 @@ os.makedirs(data_folder, exist_ok=True)
 db_path = os.path.join(data_folder, "usuarios.json")
 db = TinyDB(db_path)
 
+
 class FaceRecognitionApp(ft.UserControl):
     def build(self) -> ft.Control:
         return ft.Tabs(
@@ -39,6 +40,7 @@ class FaceRecognitionApp(ft.UserControl):
             expand=True,
         )
 
+
 def show_error_dialog(page, message):
     dialogo_error = ft.AlertDialog(
         title=ft.Text("Error"),
@@ -50,9 +52,11 @@ def show_error_dialog(page, message):
     dialogo_error.open = True
     page.update()
 
+
 def close_dialog(page):
     page.dialog.open = False
     page.update()
+
 
 def register_user(page, usuario, password, confirmar_password, codigo_seguridad):
     if not usuario or not password or not confirmar_password or not codigo_seguridad:
@@ -76,6 +80,7 @@ def register_user(page, usuario, password, confirmar_password, codigo_seguridad)
     else:
         show_error_dialog(page, "El usuario ya existe")
 
+
 def validate_login(page, usuario, password):
     if not usuario or not password:
         show_error_dialog(page, "Por favor, complete todos los campos.")
@@ -90,6 +95,7 @@ def validate_login(page, usuario, password):
     else:
         show_error_dialog(page, "Nombre de usuario o contraseña incorrectos")
 
+
 def show_success_dialog(page, message):
     dialogo_exito = ft.AlertDialog(
         title=ft.Text("Éxito"),
@@ -98,6 +104,7 @@ def show_success_dialog(page, message):
         actions_alignment=ft.MainAxisAlignment.END,
     )
     dialogo_exito.open = True
+
 
 def login_screen(page: ft.Page) -> ft.Control:
     img = ft.Image(
@@ -115,7 +122,7 @@ def login_screen(page: ft.Page) -> ft.Control:
         usuario = campo_usuario.value
         password = campo_password.value
         try:
-            validate_login(page, usuario, password)  # Validar inicio de sesión
+            validate_login(page, usuario, password)
         except Exception as e:
             show_error_dialog(page, str(e))
 
@@ -127,8 +134,10 @@ def login_screen(page: ft.Page) -> ft.Control:
             ft.Row(controls=[ft.Column([campo_usuario, campo_password, boton_login])],
                    alignment=ft.MainAxisAlignment.CENTER)
         ],
+        alignment=ft.MainAxisAlignment.CENTER,
         expand=True
     )
+
 
 def register_screen(page: ft.Page) -> ft.Control:
     img = ft.Image(
@@ -152,7 +161,7 @@ def register_screen(page: ft.Page) -> ft.Control:
         confirmar_password = campo_confirmar_password.value
         codigo_seguridad = campo_codigo_seguridad.value
         try:
-            register_user(page, usuario, password, confirmar_password, codigo_seguridad)  # Implementar lógica de registro
+            register_user(page, usuario, password, confirmar_password, codigo_seguridad)
         except Exception as e:
             show_error_dialog(page, str(e))
 
@@ -165,8 +174,10 @@ def register_screen(page: ft.Page) -> ft.Control:
                 [campo_usuario, campo_password, campo_confirmar_password, campo_codigo_seguridad, boton_registro])],
                    alignment=ft.MainAxisAlignment.CENTER)
         ],
+        alignment=ft.MainAxisAlignment.CENTER,
         expand=True
     )
+
 
 def app(page: ft.Page) -> None:
     page.title = APP_TITLE
@@ -198,7 +209,6 @@ def app(page: ft.Page) -> None:
     page.update()
     page.window_center()
 
+
 def start_app() -> None:
     ft.app(target=app)
-
-start_app()
