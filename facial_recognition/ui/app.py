@@ -205,7 +205,7 @@ def app(page: ft.Page) -> None:
     ))
 
     page.appbar = custom_app_bar()
-    page.theme = ft.Theme(color_scheme_seed=ft.colors.YELLOW)
+    page.theme = ft.Theme(color_scheme_seed=ft.colors.PURPLE)
     page.update()
     page.window_center()
 

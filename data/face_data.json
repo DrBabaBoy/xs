@@ -1,1 +1,1 @@
-{"face_data": {}}
+{"face_data": {"1": {"name": "Montserrat", "surname": "Quintero", "user_id": 21080817, "career": "Quimica", "acss": "Alumno", "data_path": "{TinyUuid}:f051972c-3106-4d1e-a568-79ff09a3a790", "created_at": "{TinyDate}:2024-05-11T23:03:37.992543"}, "2": {"name": "Daniel", "surname": "Rasgado", "user_id": null, "career": null, "acss": "Trabajador", "data_path": "{TinyUuid}:ca8567b7-0711-40f2-b8b0-505b5ca2c66b", "created_at": "{TinyDate}:2024-05-11T23:04:15.321576"}}}
