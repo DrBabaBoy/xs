@@ -181,6 +181,7 @@ def register_screen(page: ft.Page) -> ft.Control:
 
 def app(page: ft.Page) -> None:
     page.title = APP_TITLE
+    page.theme_mode = ft.ThemeMode.LIGHT
 
     login_tab = ft.Tab(
         text="Login",
