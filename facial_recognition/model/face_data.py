@@ -10,6 +10,7 @@ class FaceData(BaseModel):
     name: str = Field(min_length=1)
     surname: str = Field(default="", min_length=1)
     user_id: Optional[int] = Field(default=None)
+    worker_number: Optional[int] = Field(default=None)
     career: Optional[str] = Field(default=None)
     acss: str = Field(default=None)
     data_path: uuid.UUID = Field(default_factory=uuid.uuid4)

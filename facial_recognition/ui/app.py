@@ -5,6 +5,7 @@ import flet as ft
 from facial_recognition.ui.screens.facial_recognition_screen import FacialRecognitionScreen
 from facial_recognition.ui.screens.generate_data_screen import GenerateDataScreen
 from facial_recognition.ui.screens.train_model_screen import TrainModelScreen
+from facial_recognition.ui.screens.check_persons_screen import CheckPersonsScreen
 from facial_recognition.ui.user_controls.app_bar import custom_app_bar
 from facial_recognition.util.constants import APP_TITLE
 
@@ -35,6 +36,11 @@ class FaceRecognitionApp(ft.UserControl):
                     text="Recognize faces",
                     icon=ft.icons.FIND_IN_PAGE,
                     content=FacialRecognitionScreen()
+                ),
+                ft.Tab(
+                    text="Users Check",
+                    icon=ft.icons.PERSON,
+                    content=CheckPersonsScreen(),
                 )
             ],
             expand=True,
@@ -181,7 +187,6 @@ def register_screen(page: ft.Page) -> ft.Control:
 
 def app(page: ft.Page) -> None:
     page.title = APP_TITLE
-    page.theme_mode = ft.ThemeMode.LIGHT
 
     login_tab = ft.Tab(
         text="Login",
