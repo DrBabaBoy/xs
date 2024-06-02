@@ -70,7 +70,7 @@ class FacialRecognition:
                             cv2.LINE_AA)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         else:
-            cv2.putText(frame, 'Unknown', (x, y - 20), 2, 0.8, (0, 0, 255), 1, cv2.LINE_AA)
+            cv2.putText(frame, 'Desconocido', (x, y - 20), 2, 0.8, (0, 0, 255), 1, cv2.LINE_AA)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
         self.on_image_captured(frame_to_image(frame))

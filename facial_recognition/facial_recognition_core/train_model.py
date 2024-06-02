@@ -31,7 +31,7 @@ class TrainModel:
         doc_ids: list[int] = []
 
         for index, face_data in enumerate(self._face_data_list, start=1):
-            self.on_step_change(f"Reading face data: {index}/{len(self._face_data_list)}")
+            self.on_step_change(f"Leyendo datos faciales: {index}/{len(self._face_data_list)}")
             face_path = DATA_DIR / str(face_data.data_path)
 
             for image_path in face_path.iterdir():
@@ -45,13 +45,13 @@ class TrainModel:
         model_path = str(DATA_DIR / MODEL_FILE_NAME)
 
         face_recognizer = cv2.face.LBPHFaceRecognizer.create()
-        self.on_step_change("Training model...")
+        self.on_step_change("Entrenando modelo...")
         face_recognizer.train(faces_data, np.array(labels))
-        self.on_step_change("Saving model...")
+        self.on_step_change("Guardando modelo...")
         face_recognizer.write(model_path)
 
     def _on_training_complete(self) -> None:
-        self.on_step_change("Training complete")
+        self.on_step_change("Entrenamiento completo")
         self.on_training_complete()
 
 
@@ -82,8 +82,8 @@ if __name__ == "__main__":
 
         dialog = ft.AlertDialog(
             modal=True,
-            title=ft.Text("Model Trained"),
-            content=ft.Text("Model trained successfully"),
+            title=ft.Text("Modelo Entrenado"),
+            content=ft.Text("Modelo entrenado con éxito"),
             actions=[
                 ft.TextButton(
                     text="Ok",
@@ -95,11 +95,11 @@ if __name__ == "__main__":
 
         page.add(
             ft.TextButton(
-                text="Train model",
+                text="Entrenar modelo",
                 on_click=lambda _: train_model.start_training()
             ),
             ft.Text(
-                value="No model trained yet",
+                value="Aún no se ha entrenado el modelo",
                 ref=text_ref,
             )
         )

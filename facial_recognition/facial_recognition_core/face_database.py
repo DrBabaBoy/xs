@@ -96,14 +96,14 @@ if __name__ == "__main__":
 
     def main(page: ft.Page) -> None:
         def update_image_captured(face_count: int, image: ImageContent) -> None:
-            text.value = f"Captured {face_count} faces"
+            text.value = f"Se capturaron {face_count} caras"
             image_webcam.src_base64 = image
             page.update()
 
         face_data = FaceData(name="test")
         face_database = FaceDatabase(
             face_data=face_data,
-            on_capture_complete=lambda: print("Captured face"),
+            on_capture_complete=lambda: print("Cara capturada"),
             on_image_captured=update_image_captured,
         )
         text = ft.Text("")
@@ -112,7 +112,7 @@ if __name__ == "__main__":
             ft.Column(
                 controls=[
                     ft.TextButton(
-                        "Stop", on_click=lambda e: face_database.stop_capture()
+                        "Detener", on_click=lambda e: face_database.stop_capture()
                     ),
                     text,
                     image_webcam,

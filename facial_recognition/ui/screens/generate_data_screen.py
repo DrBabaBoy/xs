@@ -39,10 +39,10 @@ class GenerateDataScreen(ft.UserControl):
         )
         self.face_capture_dialog = ft.AlertDialog(
             modal=True,
-            title=ft.Text("Capturing face..."),
+            title=ft.Text("Capturando rostro..."),
             content=face_capturer,
             actions=[
-                ft.TextButton(text="Stop", on_click=close_dialog),
+                ft.TextButton(text="Detener", on_click=close_dialog),
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
@@ -75,7 +75,7 @@ class GenerateDataScreen(ft.UserControl):
         self.update_face_dada_list()
 
     def update_face_dada_list(self):
-        self.text_ref.current.value = f"Number of loaded faces: {len(self.face_data_list)}"
+        self.text_ref.current.value = f"Número de rostros cargados: {len(self.face_data_list)}"
         self.list_view_ref.current.controls = [
             FaceDataItem(
                 face_data=face_data,
@@ -92,7 +92,7 @@ class GenerateDataScreen(ft.UserControl):
                     NameTextField(on_capture_click=self.on_capture_click),
                     ft.Text(
                         ref=self.text_ref,
-                        value=f"Number of loaded faces: {len(self.face_data_list)}",
+                        value=f"Número de rostros cargados: {len(self.face_data_list)}",
                         theme_style=ft.TextThemeStyle.HEADLINE_LARGE
                     ),
                     ft.ListView(

@@ -13,8 +13,10 @@ SECURITY_CODE = "1234"
 
 data_folder = os.path.join(os.getcwd(), "data")
 os.makedirs(data_folder, exist_ok=True)
-db_path = os.path.join(data_folder, "usuarios.json")
+db_path = os.path.join(data_folder, "users.json")
 db = TinyDB(db_path)
+
+authenticated_user = None
 
 
 class FaceRecognitionApp(ft.UserControl):
@@ -23,22 +25,22 @@ class FaceRecognitionApp(ft.UserControl):
             selected_index=0,
             tabs=[
                 ft.Tab(
-                    text="Generate data",
+                    text="Generar datos",
                     icon=ft.icons.INSERT_CHART,
                     content=GenerateDataScreen()
                 ),
                 ft.Tab(
-                    text="Train model",
+                    text="Entrenar modelo",
                     icon=ft.icons.ATTACH_FILE,
                     content=TrainModelScreen(),
                 ),
                 ft.Tab(
-                    text="Recognize faces",
+                    text="Reconocer rostros",
                     icon=ft.icons.FIND_IN_PAGE,
                     content=FacialRecognitionScreen()
                 ),
                 ft.Tab(
-                    text="Users Check",
+                    text="Lista entradas",
                     icon=ft.icons.PERSON,
                     content=CheckPersonsScreen(),
                 )
@@ -65,7 +67,7 @@ def close_dialog(page):
 
 
 def register_user(page, usuario, password, confirmar_password, codigo_seguridad):
-    if not usuario or not password or not confirmar_password or not codigo_seguridad:
+    if not usuario or not password or not confirmar_password:
         show_error_dialog(page, "Por favor, complete todos los campos.")
         return
 
@@ -81,13 +83,14 @@ def register_user(page, usuario, password, confirmar_password, codigo_seguridad)
     Usuario = Query()
     if not db.search(Usuario.usuario == usuario):
         db.insert({'usuario': usuario, 'password': password_hash})
-        print("Usuario registrado exitosamente!")
         show_success_dialog(page, "Usuario registrado exitosamente!")
+        authenticate_and_redirect(page, usuario)
     else:
         show_error_dialog(page, "El usuario ya existe")
 
 
 def validate_login(page, usuario, password):
+    global authenticated_user
     if not usuario or not password:
         show_error_dialog(page, "Por favor, complete todos los campos.")
         return
@@ -96,20 +99,37 @@ def validate_login(page, usuario, password):
     Usuario = Query()
     resultado = db.get((Usuario.usuario == usuario) & (Usuario.password == password_hash))
     if resultado:
-        print("¡Bienvenido,", usuario, "!")
         show_success_dialog(page, f"¡Bienvenido, {usuario}!")
+        authenticate_and_redirect(page, usuario)
     else:
         show_error_dialog(page, "Nombre de usuario o contraseña incorrectos")
+
+
+def authenticate_and_redirect(page, usuario):
+    global authenticated_user
+    authenticated_user = usuario
+    page.tabs.tabs[0].visible = False
+    page.tabs.tabs[1].visible = False
+    page.tabs.tabs[2].visible = True
+    page.tabs.selected_index = 2
+    page.update()
 
 
 def show_success_dialog(page, message):
     dialogo_exito = ft.AlertDialog(
         title=ft.Text("Éxito"),
         content=ft.Text(message),
-        actions=[ft.TextButton("Ok")],
+        actions=[ft.TextButton("Ok", on_click=lambda event: close_success_dialog(page))],
         actions_alignment=ft.MainAxisAlignment.END,
     )
     dialogo_exito.open = True
+    page.dialog = dialogo_exito
+    page.update()
+
+
+def close_success_dialog(page):
+    page.dialog.open = False
+    page.update()
 
 
 def login_screen(page: ft.Page) -> ft.Control:
@@ -189,31 +209,39 @@ def app(page: ft.Page) -> None:
     page.title = APP_TITLE
 
     login_tab = ft.Tab(
-        text="Login",
+        text="Iniciar Sesión",
         icon=ft.icons.PERSON,
         content=login_screen(page),
     )
     register_tab = ft.Tab(
-        text="Register",
+        text="Registrarse",
         icon=ft.icons.PERSON_ADD,
         content=register_screen(page),
     )
     main_app_tab = ft.Tab(
-        text="Main App",
+        text="Aplicación",
         icon=ft.icons.APPS,
         content=FaceRecognitionApp(),
+        visible=False,
     )
 
-    page.add(ft.Tabs(
+    page.tabs = ft.Tabs(
         selected_index=0,
         tabs=[login_tab, register_tab, main_app_tab],
         expand=True,
-    ))
+    )
+
+    page.add(page.tabs)
 
     page.appbar = custom_app_bar()
     page.theme = ft.Theme(color_scheme_seed=ft.colors.PURPLE)
     page.update()
     page.window_center()
+
+    if authenticated_user:
+        page.tabs.tabs[2].visible = True
+        page.tabs.selected_index = 2
+        page.update()
 
 
 def start_app() -> None:

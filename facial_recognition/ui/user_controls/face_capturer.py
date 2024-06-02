@@ -36,7 +36,7 @@ class FaceCapturer(ft.UserControl):
         self.image_ref.current.src_base64 = image
         self.image_ref.current.visible = True
 
-        self.text_ref.current.value = f"Captured {face_count + 1} / {MAX_FACES} faces"
+        self.text_ref.current.value = f"Capturado {face_count + 1} / {MAX_FACES} rostros"
         self.update()
 
     def stop_capture(self) -> None:
@@ -52,7 +52,7 @@ class FaceCapturer(ft.UserControl):
                 ft.Container(
                     content=ft.Text(
                         ref=self.text_ref,
-                        value="Initializing...",
+                        value="Inicializando...",
                     ),
                     bgcolor=ft.colors.BLACK,
                 )

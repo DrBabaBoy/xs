@@ -1,7 +1,7 @@
 from typing import Callable
 
 import flet as ft
-from humanize import naturalday
+from humanize import naturaltime
 
 from facial_recognition.model.face_data import FaceData
 
@@ -25,19 +25,19 @@ class FaceDataItem(ft.UserControl):
     def build(self) -> ft.Card:
         return ft.Card(
             ft.ListTile(
-                title=ft.Text(self.face_data.name),
-                subtitle=ft.Text(naturalday(self.face_data.created_at)),
+                title=ft.Text(f"{self.face_data.name} {self.face_data.surname}"),
+                subtitle=ft.Text(f"Tipo de acceso: {self.face_data.acss}, creado: {naturaltime(self.face_data.created_at)}"),
                 trailing=ft.PopupMenuButton(
                     icon=ft.icons.MORE_VERT,
                     items=[
                         ft.PopupMenuItem(
                             icon=ft.icons.CLOSE,
-                            text="Delete face",
+                            text="Eliminar rostro",
                             on_click=lambda _: self.on_delete_click(self.face_data),
                         ),
                         ft.PopupMenuItem(
                             icon=ft.icons.REFRESH,
-                            text="Recapture face",
+                            text="Recapturar rostro",
                             on_click=lambda _: self.on_recapture_click(self.face_data),
                         )
                     ]
