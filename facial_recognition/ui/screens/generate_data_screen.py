@@ -1,5 +1,4 @@
 import flet as ft
-
 from facial_recognition.database import Database, Tables
 from facial_recognition.model.face_data import FaceData
 from facial_recognition.ui.user_controls.face_capturer import FaceCapturer
@@ -10,7 +9,6 @@ from facial_recognition.util.file import (
     delete_face_directory,
     delete_model_file,
 )
-
 
 class GenerateDataScreen(ft.UserControl):
     text_ref = ft.Ref[ft.Text]()
@@ -74,13 +72,49 @@ class GenerateDataScreen(ft.UserControl):
 
         self.update_face_dada_list()
 
+    def on_edit_click(self, face_data: FaceData) -> None:
+        def save_changes(_event: ft.ControlEvent) -> None:
+            face_data.name = name_field.value
+            face_data.surname = surname_field.value
+            face_data.acss = acss_field.value
+
+            with Database(Tables.FACE_DATA) as db:
+                db.update(face_data.model_dump(), doc_ids=[face_data.doc_id])
+
+            self.update_face_dada_list()
+            self.edit_dialog.open = False
+            self.page.update()
+
+        name_field = ft.TextField(label="Nombre", value=face_data.name)
+        surname_field = ft.TextField(label="Apellido", value=face_data.surname)
+        acss_field = ft.TextField(label="Tipo de acceso", value=face_data.acss)
+
+        self.edit_dialog = ft.AlertDialog(
+            modal=True,
+            title=ft.Text("Editar datos de la persona"),
+            content=ft.Column([
+                name_field,
+                surname_field,
+                acss_field
+            ]),
+            actions=[
+                ft.TextButton(text="Guardar", on_click=save_changes),
+                ft.TextButton(text="Cancelar", on_click=lambda _: setattr(self.edit_dialog, 'open', False))
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+        self.page.dialog = self.edit_dialog
+        self.edit_dialog.open = True
+        self.page.update()
+
     def update_face_dada_list(self):
         self.text_ref.current.value = f"Número de rostros cargados: {len(self.face_data_list)}"
         self.list_view_ref.current.controls = [
             FaceDataItem(
                 face_data=face_data,
                 on_delete_click=self.on_delete_click,
-                on_recapture_click=lambda f: self.on_capture_click(f, True)
+                on_recapture_click=lambda f: self.on_capture_click(f, True),
+                on_edit_click=self.on_edit_click
             ) for face_data in self.face_data_list
         ]
         self.update()
@@ -102,7 +136,8 @@ class GenerateDataScreen(ft.UserControl):
                             FaceDataItem(
                                 face_data=face_data,
                                 on_delete_click=self.on_delete_click,
-                                on_recapture_click=lambda f: self.on_capture_click(f, True)
+                                on_recapture_click=lambda f: self.on_capture_click(f, True),
+                                on_edit_click=self.on_edit_click
                             ) for face_data in self.face_data_list
                         ],
                     )

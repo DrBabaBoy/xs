@@ -14,7 +14,7 @@ class CheckPersonsScreen(ft.UserControl):
     face_data_list: list[FaceData] = []
 
     def update_face_data_list(self):
-        self.text_ref.current.value = f"Número de rostros cargados: {len(self.face_data_list)}"
+        self.text_ref.current.value = f"Lista de personas encontradas: {len(self.face_data_list)}"
         face_data_items = [
             FaceDataItem(face_data=face_data)
             for face_data in self.face_data_list
@@ -29,7 +29,7 @@ class CheckPersonsScreen(ft.UserControl):
                 [
                     ft.Text(
                         ref=self.text_ref,
-                        value=f"Número de rostros cargados: {len(self.face_data_list)}",
+                        value=f"Lista de personas encontradas: {len(self.face_data_list)}",
                         theme_style=ft.TextThemeStyle.HEADLINE_LARGE
                     ),
                     ft.ListView(
