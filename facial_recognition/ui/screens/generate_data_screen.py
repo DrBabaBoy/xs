@@ -76,7 +76,11 @@ class GenerateDataScreen(ft.UserControl):
         def save_changes(_event: ft.ControlEvent) -> None:
             face_data.name = name_field.value
             face_data.surname = surname_field.value
-            face_data.acss = acss_field.value
+
+            if face_data.acss == "Alumno":
+                face_data.user_id = user_id_field.value
+            elif face_data.acss == "Trabajador":
+                face_data.worker_number = worker_number_field.value
 
             with Database(Tables.FACE_DATA) as db:
                 db.update(face_data.model_dump(), doc_ids=[face_data.doc_id])
@@ -85,21 +89,39 @@ class GenerateDataScreen(ft.UserControl):
             self.edit_dialog.open = False
             self.page.update()
 
+        def close_dialog(_event: ft.ControlEvent) -> None:
+            self.edit_dialog.open = False
+            self.page.update()
+
         name_field = ft.TextField(label="Nombre", value=face_data.name)
         surname_field = ft.TextField(label="Apellido", value=face_data.surname)
-        acss_field = ft.TextField(label="Tipo de acceso", value=face_data.acss)
+        acss_field = ft.Dropdown(
+            label="Tipo de acceso",
+            value=face_data.acss,
+            options=[
+                ft.dropdown.Option("Alumno"),
+                ft.dropdown.Option("Trabajador"),
+                ft.dropdown.Option("Invitado"),
+            ],
+            disabled=True  # Deshabilitamos la edición del tipo de acceso
+        )
+
+        if face_data.acss == "Alumno":
+            user_id_field = ft.TextField(label="Matrícula", value=face_data.user_id, max_length=8)
+            content = [name_field, surname_field, acss_field, user_id_field]
+        elif face_data.acss == "Trabajador":
+            worker_number_field = ft.TextField(label="Número de Trabajador", value=face_data.worker_number, max_length=8)
+            content = [name_field, surname_field, acss_field, worker_number_field]
+        else:  # Invitado
+            content = [name_field, surname_field, acss_field]
 
         self.edit_dialog = ft.AlertDialog(
             modal=True,
             title=ft.Text("Editar datos de la persona"),
-            content=ft.Column([
-                name_field,
-                surname_field,
-                acss_field
-            ]),
+            content=ft.Column(content),
             actions=[
                 ft.TextButton(text="Guardar", on_click=save_changes),
-                ft.TextButton(text="Cancelar", on_click=lambda _: setattr(self.edit_dialog, 'open', False))
+                ft.TextButton(text="Cancelar", on_click=close_dialog)
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
@@ -114,7 +136,7 @@ class GenerateDataScreen(ft.UserControl):
                 face_data=face_data,
                 on_delete_click=self.on_delete_click,
                 on_recapture_click=lambda f: self.on_capture_click(f, True),
-                on_edit_click=self.on_edit_click
+                on_edit_click=self.on_edit_click  # Añadir esto
             ) for face_data in self.face_data_list
         ]
         self.update()
@@ -137,7 +159,7 @@ class GenerateDataScreen(ft.UserControl):
                                 face_data=face_data,
                                 on_delete_click=self.on_delete_click,
                                 on_recapture_click=lambda f: self.on_capture_click(f, True),
-                                on_edit_click=self.on_edit_click
+                                on_edit_click=self.on_edit_click  # Añadir esto
                             ) for face_data in self.face_data_list
                         ],
                     )

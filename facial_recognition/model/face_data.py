@@ -9,7 +9,7 @@ class FaceData(BaseModel):
     doc_id: int = Field(default=None, exclude=True)
     name: str = Field(min_length=1)
     surname: str = Field(default="", min_length=1)
-    user_id: Optional[int] = Field(default=None)
+    user_id: Optional[str] = Field(default=None)
     worker_number: Optional[int] = Field(default=None)
     career: Optional[str] = Field(default=None)
     acss: str = Field(default=None)
