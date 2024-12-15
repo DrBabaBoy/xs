@@ -24,10 +24,10 @@ class FacialRecognitionScreen(ft.UserControl):
         facial_recognizer = FacialRecognizer()
         facial_recognizer_dialog = ft.AlertDialog(
             modal=True,
-            title=ft.Text("Recognizing..."),
+            title=ft.Text("Reconociendo..."),
             content=facial_recognizer,
             actions=[
-                ft.TextButton(text="Stop", on_click=close_dialog),
+                ft.TextButton(text="Detener", on_click=close_dialog),
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
@@ -42,8 +42,8 @@ class FacialRecognitionScreen(ft.UserControl):
 
         dialog = ft.AlertDialog(
             modal=True,
-            title=ft.Text("No model found"),
-            content=ft.Text("Please train the model first"),
+            title=ft.Text("Modelo no encontrado"),
+            content=ft.Text("Por favor, entrena el modelo primero"),
             actions=[
                 ft.TextButton(text="Ok", on_click=close_dialog),
             ],
@@ -60,7 +60,7 @@ class FacialRecognitionScreen(ft.UserControl):
                     ft.Row(
                         controls=[
                             ft.FilledButton(
-                                text="Start recognition",
+                                text="Iniciar reconocimiento",
                                 on_click=lambda _: self.on_start_recognition(),
                                 expand=True
                             ),

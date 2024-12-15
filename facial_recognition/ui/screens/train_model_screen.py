@@ -36,7 +36,7 @@ class TrainModelScreen(ft.UserControl):
                 on_step_change=self.on_step_change,
             )
 
-            self._status_text_ref.current.value = "Initializing training..."
+            self._status_text_ref.current.value = "Iniciando el entrenamiento..."
             self._status_card_ref.current.visible = True
             self._status_card_ref.current.update()
 
@@ -55,8 +55,8 @@ class TrainModelScreen(ft.UserControl):
 
         dialog = ft.AlertDialog(
             modal=True,
-            title=ft.Text("Model Trained"),
-            content=ft.Text("Model trained successfully"),
+            title=ft.Text("Modelo Entrenado"),
+            content=ft.Text("El modelo se entrenó correctamente"),
             actions=[
                 ft.TextButton(
                     text="Ok",
@@ -83,8 +83,8 @@ class TrainModelScreen(ft.UserControl):
 
         dialog = ft.AlertDialog(
             modal=True,
-            title=ft.Text("No face data"),
-            content=ft.Text("No face data to train model"),
+            title=ft.Text("Sin datos faciales"),
+            content=ft.Text("No hay datos faciales para entrenar el modelo"),
             actions=[ft.TextButton("Ok", on_click=close_dialog)],
             actions_alignment=ft.MainAxisAlignment.END,
         )
@@ -100,7 +100,7 @@ class TrainModelScreen(ft.UserControl):
                     ft.Row(
                         controls=[
                             ft.FilledButton(
-                                text="Train model",
+                                text="Entrenar modelo",
                                 on_click=lambda _: self.on_train_model(),
                                 expand=True,
                                 ref=self._train_button_ref,

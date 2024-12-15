@@ -42,7 +42,7 @@ class FacialRecognizer(ft.UserControl):
                 ),
                 ft.Container(
                     content=ft.Text(
-                        value="Initializing...",
+                        value="Inicializando...",
                     ),
                     bgcolor=ft.colors.BLACK,
                     ref=self.container_ref
